@@ -1,0 +1,105 @@
+﻿@using LicenseLogReader.Models
+
+<!DOCTYPE html>
+
+<head>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="../Content/style.css" />
+
+
+    <link rel="stylesheet" type="text/css" href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/themes/ui-lightness/jquery-ui.css">
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.2.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.2/jquery-ui.min.js"></script>
+
+
+    @* стилизация виджета *@
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+
+</head>
+
+<html>
+<body>
+    <div>
+        <h3 align="center">История предоставления лицензий</h3>
+        <form method="get" class="flex-container center" autocomplete="on" id="form">
+
+            <div class="form-inline form-group flex-item center">
+
+                <div class="center">
+                    <label class="control-label">Введите ИНН:</label>
+                    <input type="number" name="inn" class="form-control raz" id="inn" value="@ViewBag.Inn" autofocus />
+
+
+                    <input type="submit" class="submit" value="ФИЛЬТР" id="submit" />
+                </div>
+
+                <div class="flex-item" style="display: inline-table">
+                    <div class="center scroll-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ИНН</th>
+                                    <th>Наименование организации</th>
+                                    <th>Дата записи</th>
+                                    <th>Текст записи</th>
+
+                                </tr>
+
+                            </thead>
+                        </table>
+                        <div class="center scroll-table-body">
+                            <table>
+                                <tbody>
+                                    @foreach (TsqlListViewModel tsql in ViewBag.Mass)
+                                    {
+                                        <tr>
+                                            <td>@tsql.Inn</td>
+                                            <td>@tsql.OrgName</td>
+                                            <td>@tsql.ChangeTime</td>
+                                            <td>@tsql.LogText</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    <script>
+
+        $('input#inn').autocomplete({
+            source: '/search',
+            select: "",
+            autoFocus: true,
+            delay: 600,
+        });
+    </script>
+
+    <script>
+        document.querySelector("#submit").onclick = function () {
+
+            var input = document.getElementById("inn");
+
+            input.addEventListener("keyup", function (event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    document.getElementById("submit").click();
+                }
+            });
+        }
+
+    </script>
+
+</body>
+</html>
